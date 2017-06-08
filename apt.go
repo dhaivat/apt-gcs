@@ -36,7 +36,8 @@ func (a *AptMessage) Encode() string {
 	buf.WriteString(fmt.Sprintf("%v %v\n", a.Code, messageCodes[a.Code]))
 
 	for key, value := range a.Headers {
-		buf.WriteString(fmt.Sprintf("%v: %v\n", key, value))
+		valueFix := strings.Replace(value, "%", "%%", -1)
+		buf.WriteString(fmt.Sprintf("%v: %v\n", key, valueFix))
 	}
 
 	buf.WriteRune('\n')
