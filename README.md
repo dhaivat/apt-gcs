@@ -3,7 +3,11 @@
 ## APT Google Cloud Storage Transport
 
 Allows one to use a private GCS Bucket as an APT repository.  Authentication is handled by `gcloud` tool locally or
-by application default credentials on Google Compute Engine
+by application default credentials on Google Compute Engine.  You can also configure per-bucket credentials in APT
+configuration:
+```
+Acquire::gcs::<bucket>::CredentialsFile "/path/to/creds.json";
+```
 
 
 ## License
