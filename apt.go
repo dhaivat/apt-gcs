@@ -157,7 +157,7 @@ func (a *AptMethod) ReadObejct(message map[string]string) {
 	} else {
 		a.SendUriFailure(map[string]string{
 			"URI":        uri,
-			"Message":    "silly failure",
+			"Message":    err.Error(),
 			"FailReason": "really silly failure",
 		})
 	}
