@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "github.com/ceocoder/apt-gcs"
+	. "github.com/dhaivat/apt-gcs"
 )
 
 func main() {
