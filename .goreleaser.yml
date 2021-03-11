@@ -1,0 +1,45 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - id: gs
+    binary: gs
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    goos:
+      - linux
+    ldflags:
+      - -s -w
+    main: ./cmd/main.go
+nfpms:
+  - id: apt-transport-gs-deb
+    package_name: apt-transport-gs
+    # https://github.com/goreleaser/goreleaser/issues/2095
+    file_name_template: 'apt-transport-gs_{{ .Version }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
+    bindir: /usr/lib/apt/methods
+    builds:
+      - gs
+    formats:
+      - deb
+    license: MIT
+    homepage: https://github.com/dhaivat/apt-gcs
+    maintainer: Dhaivat Pandit <me@dhaiv.at>
+    description: APT transport for Google Cloud Storage
+checksum:
+  disable: true
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+# Include only the deb artifacts, not loose binaries or tarballs.
+# https://github.com/goreleaser/goreleaser/discussions/2096#discussioncomment-451535
+archives:
+  - id: default
+    format: binary
+release:
+  ids:
+    - apt-transport-gs-deb
