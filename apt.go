@@ -48,6 +48,7 @@ func (a *AptMessage) Encode() string {
 }
 
 type AptMethod struct {
+	Reader *bufio.Reader
 }
 
 func (a *AptMethod) Send(code int, headers map[string]string) {
@@ -92,14 +93,13 @@ func (a *AptMethod) Run() (exitCode int) {
 
 func (a *AptMethod) readMessage() (message map[string]string) {
 	message = map[string]string{}
-	reader := bufio.NewReader(os.Stdin)
-	line, err := reader.ReadString('\n')
+	line, err := a.Reader.ReadString('\n')
 	if err == io.EOF {
 		return message
 	}
 
 	for line == "\n" {
-		line, err = reader.ReadString('\n')
+		line, err = a.Reader.ReadString('\n')
 		if err == io.EOF {
 			return message
 		}
@@ -111,7 +111,7 @@ func (a *AptMethod) readMessage() (message map[string]string) {
 	message["_text"] = strings.TrimSpace(s[1])
 
 	for {
-		line, err := reader.ReadString('\n')
+		line, err := a.Reader.ReadString('\n')
 		if err == io.EOF || line == "\n" {
 			return message
 		}
